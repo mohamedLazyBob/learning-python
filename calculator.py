@@ -5,6 +5,7 @@ a simple calculator that i did to learn tkinter and graphic interfaces
 
 
 from tkinter import * 
+from tkinter import font
 from tkinter.ttk import Separator, Style
 
 # we create the main window
@@ -13,13 +14,12 @@ win = Tk()
 # win.configure(background="light blue")
 win.configure(background="#191b28")
 win.title("lazyBob calculator")
-win.geometry('350x475')
+win.geometry('410x480')
 win.resizable(0, 0)
 
 expression= ''
 
 def button_clicked(var):
-    print("{} got clicked!".format(var))
     global expression 
     expression += str(var)
     entr1.set(expression)
@@ -31,22 +31,37 @@ def clear_entry():
     entr2.set('')
 
 def print_result():
-    print("test test")
+    try :
+        global expression
+        var1 = eval(expression)
+        expression = str(var1)
+
+        entr2.set(var1)
+
+    except :
+        expression = ''
+        entr1.set(" ERROR ")
+        entr2.set('')
+
+def del_last_char():
+    global expression
+    expression = expression[:-1]
+    entr1.set(expression)
 
 entr1 = StringVar()
-entry1 = Entry(win, textvariable=entr1, width=21, bg='#191b28', borderwidth=0, highlightthickness=0)
+entry1 = Entry(win, textvariable=entr1, width=21, bg='#191b28', fg='white', borderwidth=0, highlightthickness=0, font=("Calibri 12"))
 entry1.grid(row=0, columnspan=4, ipadx = 100, ipady = 15)
 
 sep = Separator(win, orient="horizontal")
 sep.grid(row=1, sticky="we", columnspan=150)
 
 entr2 = StringVar()
-entry2 = Entry(win, textvariable=entr2, width=21, bg='#191b28', bd=0, highlightthickness=0)
+entry2 = Entry(win, textvariable=entr2, width=21, bg='#191b28', fg='white', bd=0, highlightthickness=0, font=("Calibri 12"))
 entry2.grid(row=2, columnspan=4, ipadx = 100, ipady = 10)
 
 # the 1st line
 button0 = Button(win, text="CE",  height=2, width=3, bg='#52c9dd', font='Leaner 20 bold', command = clear_entry)
-button1 = Button(win, text="+/-", height=2, width=3, bg='#52c9dd', font='Leaner 20 bold')
+button1 = Button(win, text="<-", height=2, width=3, bg='#52c9dd', font = font.Font(family='Leaner', size=20, weight=font.BOLD), command=del_last_char)
 button2 = Button(win, text="%",   height=2, width=3, bg='#52c9dd', font='Leaner 20 bold', command = lambda: button_clicked("%"))
 button3 = Button(win, text="/",   height=2, width=3, bg='#52c9dd', font='Leaner 20 bold', command = lambda: button_clicked("/"))
 
